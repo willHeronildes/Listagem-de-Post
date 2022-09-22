@@ -1,6 +1,6 @@
 import React from "react";
 
-import {BrowserRouter as Router, Routes, Link, Route } from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Link, Route} from 'react-router-dom';
 
 import Post from './pages/Post/post';
 import Edit from './pages/Edit/edit'
@@ -13,7 +13,7 @@ function App() {
          <Routes>
            <Route path="/" element={<Feed/>}/>
            <Route path="/post" element={<Post/>}/>
-           <Route path="/edit" element={<Edit/>}/>
+           <Route path="/edit/:id" element={<Edit/>}/>
            <Route path="/lermais" element={<LerMais/>}/>
          </Routes>
       </Router>

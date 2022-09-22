@@ -1,61 +1,89 @@
-import React from "react";
 
-import {Link} from 'react-router-dom';
+import React from 'react'
+import axios from 'axios'
 
-import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 
+import Header from '../../components/HeaderMain/HeaderMain';
+
+import {Title, Card, LinePost, Card_body_post, Main, Fields, Cabecalho, Input, Btn_post, Error_message } from '../../styled-components/styles';
+
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
+import * as yup from "yup"; 
 
-import './Post.css';
 
-import Header from "../../components/header/Header";
-
-const validacaoPost = yup.object().shape({
-    title: yup.string().required("O título é obrigatório").max(40, "O título precisa ter menos de 40 caracteres"),
-    description: yup.string().required("A descrição é obrigatório").max(150, "A descrição precisa ter menos de 150 caracteres"),
-    content: yup.string().required("O conteúdo é obrigatório").max(500, "O conteúdo precisa ter menos de 500 caracteres")
+const validationPost = yup.object().shape({
+    usuario: yup.string().required("O nome de usuario é obrigatório").max(5, "No máximo 5 caractere"),
+    title: yup.string().required("O título é obrigatório").max(40, "O título precisa ter menosde 40 caracteres"),
+    body: yup.string().required("A descrição é obrigatório").max(150, "A descrição precisa ter menosde 150 caracteres"),
 })
 
-function Post(){
-      
-    const { register, handleSubmit, watch, formState: { errors } } = useForm({
-        resolver: yupResolver(validacaoPost)
-    });
-    const onSubmit = data => console.log(data);
+function Post() {
+
+    let navigate = useNavigate()
+
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(validationPost)
+    })
+
+    const addPost = data => axios.post("https://632b49341aabd8373983a99a.mockapi.io/Posts", data)
+       
+        .then(() => {
+            console.log("Deu tudo certo")
+            navigate("/");
+        })
+        .catch(() => {
+            console.log("DEU ERRADO")
+        })
 
     return(
         <div>
-            <Header/>
-            <main>
-                <div className="card-post">
-                    <h1>Criar Postagem</h1>
-                    <div className="line-post"></div>
-                    <div className="card-body-post">
-                       <form onSubmit={handleSubmit(onSubmit)}>
-                           <div className="fields">
-                               <label>Titulo</label>
-                               <input type="text" name="title" {...register("title")}/>
-                               <p className="error-message">{errors.title?.message}</p>
-                           </div>
-                           <div className="fields">
-                               <label>Descrição</label>
-                               <input type="text" name="description" {...register("description")}/>
-                               <p className="error-message">{errors.description?.message}</p>
-                           </div>
-                           <div className="fields">
-                               <label>Conteúdo</label>
-                               <textarea type="text" name="content" {...register("content")}></textarea>
-                               <p className="error-message">{errors.content?.message}</p>
-                           </div>
-                           <div className="btn-post">
-                               <button type="submit">Enviar</button>
-                           </div>
-                       </form>
-                    </div>   
-                </div>
-            </main> 
+            <Header />
+            <Main>
+
+                <Card>
+
+                    <Title>Criar postagem</Title>
+
+                    <LinePost></LinePost>
+
+                    <Card_body_post>
+
+                        <form onSubmit={handleSubmit(addPost)} >
+
+                            <Fields>
+                                <Cabecalho>Usuario</Cabecalho>
+                                <Input type="text" name="usuario" {...register("usuario")} />
+                                <Error_message>{errors.usuario?.message}</Error_message>
+                            </Fields>
+
+                            <Fields>
+                                <Cabecalho>Título</Cabecalho>
+                                <Input type="text" name="title" {...register("title")} />
+                                <Error_message>{errors.title?.message}</Error_message>
+                            </Fields>
+
+                            <Fields>
+                                <Cabecalho>Descrição</Cabecalho>
+                                <Input type="text" name="description" {...register("body")} />
+                                <Error_message>{errors.body?.message}</Error_message>
+                            </Fields>
+
+                            <Btn_post>
+                                <button type="submit" >Enviar</button>
+                            </Btn_post>
+
+                        </form>
+
+                    </Card_body_post>
+
+                </Card>
+
+            </Main>
+
         </div>
     )
 }
+
 export default Post
