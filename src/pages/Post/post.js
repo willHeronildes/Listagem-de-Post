@@ -15,8 +15,8 @@ import * as yup from "yup";
 
 const validationPost = yup.object().shape({
     usuario: yup.string().required("O nome de usuario é obrigatório").max(5, "No máximo 5 caractere"),
-    title: yup.string().required("O título é obrigatório").max(40, "O título precisa ter menosde 40 caracteres"),
-    body: yup.string().required("A descrição é obrigatório").max(150, "A descrição precisa ter menosde 150 caracteres"),
+    title: yup.string().required("O título é obrigatório").max(70, "O título precisa ter menosde 70 caracteres"),
+    body: yup.string().required("A descrição é obrigatório").max(500, "A descrição precisa ter menosde 500 caracteres"),
 })
 
 function Post() {

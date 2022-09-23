@@ -12,7 +12,7 @@ export const Main = styled.main`
 
 export const Card = styled.div`
     background-color: #2F3644;
-    padding: 30px 70px;
+    padding: 30px 70px; 
     border-radius: 15px;
 
 `;
